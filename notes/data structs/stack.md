@@ -1,0 +1,11 @@
+- applications:
+  - function calls
+  - recursion
+  - expressions (rpn)
+  - syntax validity
+  - memory managements
+- advantages:
+  - o(1) push and pop
+  - limited memory usage overhead
+- disadvantages:
+  - limited access, no random access
