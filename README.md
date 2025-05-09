@@ -20,3 +20,5 @@ and how they can be used to detect the start of a cycle. this is used in the fin
 I also learned that you can delete a node from a linked list given a reference in o(1) time
 without needing to search through the list. you simply copy the next into the current and delete next. holy shit
 
+## 20240505
+binary trees are cool, mostly intuitive
