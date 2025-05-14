@@ -1,35 +1,43 @@
 #include <vector>
-#include <numeric>
 #include <iostream>
 
 class Solution {
+    // idea 1: I could convert candidates into an unordered map {candidate, freq}
+
 private:
-    void dfs(std::vector<int>& nums, int& target, std::vector<int>& subset, std::vector<std::vector<int>>& sol) {
-        int sum = std::accumulate(subset.begin(), subset.end(), 0);
-        if (sum == target) {
-            std::cout << "found a good subset" << std::endl;
-            sol.push_back(subset);
+    void dfs(std::vector<int>& candidates, int target, int curr, std::vector<int>& subset, std::vector<std::vector<int>>& sol) {
+        if (target <= 0) {
+            if (target == 0) sol.push_back(subset);
             return;
         }
-        if (sum > target) return;
-        for (int num : nums) {
-            subset.push_back(num);
-            dfs(nums, target, subset, sol);
+        if (candidates.size() == 0) return;
+
+        for (int i = curr; i < candidates.size(); i++) {
+            if (i > curr && candidates[i] == candidates[i - 1]) continue;
+            subset.push_back(candidates[i]);
+            dfs(candidates, target - candidates[i], i + 1, subset, sol);
             subset.pop_back();
         }
     }
 
 public:
-    std::vector<std::vector<int>> combinationSum(std::vector<int>& nums, int target) {
+    std::vector<std::vector<int>> combinationSum2(std::vector<int>& candidates, int target) {
         std::vector<std::vector<int>> sol;
         std::vector<int> subset;
-        dfs(nums, target, subset, sol);
+        std::sort(candidates.begin(), candidates.end());
+        // for (int c : candidates) std::cout << c << " ";
+        // std::cout << std::endl;
+        dfs(candidates, target, 0, subset, sol);
         return sol;
     }
 };
 
 int main() {
-    Solution solver;
-    std::vector<int> nums { 2,5,6,9 };
-    auto solution = solver.combinationSum(nums, 9);
+    std::vector<int> candidates {9,2,2,4,6,1,5};
+    Solution solution;
+    auto sols = solution.combinationSum2(candidates, 8);
+    for (auto sol : sols) {
+        for (int i : sol) std::cout << i << " ";
+        std::cout << std::endl;
+    }
 }
