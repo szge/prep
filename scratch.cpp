@@ -52,7 +52,7 @@ public:
         return c;
     }
 
-    void dfs(std::vector<std::vector<bool>>& board, int& n, std::vector<std::vector<std::string>>& sols) {
+    void dfs(std::vector<std::vector<bool>>& board, int& n, int curr_row, std::vector<std::vector<std::string>>& sols) {
         int num_queens = count_queens(board);
         if (num_queens == n) {  // base case
             std::vector<std::string> sol;
@@ -70,9 +70,11 @@ public:
         std::vector<std::pair<int, int>> vs = valid_squares(board, n);
         for (auto s : vs) {
             int& x = s.first, y = s.second;
-            board[y][x] = true;
-            dfs(board, n, sols);
-            board[y][x] = false;
+            if (y == curr_row) {
+                board[y][x] = true;
+                dfs(board, n, curr_row + 1, sols);
+                board[y][x] = false;
+            }
         }
     }
 
@@ -80,7 +82,7 @@ public:
     std::vector<std::vector<std::string>> solveNQueens(int n) {
         std::vector<std::vector<bool>> board(n, std::vector<bool>(n, false));
         std::vector<std::vector<std::string>> sols;
-        dfs(board, n, sols);
+        dfs(board, n, 0, sols);
         return sols;
     }
 };
