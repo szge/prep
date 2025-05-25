@@ -1,0 +1,46 @@
+- **statement**: an instruction that causes the program to perform some action
+- **function**: a collection of statements that is executed sequentially
+- **syntax**: the rules for describing how specific words can be arranged to form valid sentences
+- Good comment usage: (1) describing what the file/program does (2) how the program accomplishes the goal (3) why (_not what_) the code is doing
+- **data**: any information that can be moved, processed, or stored by a computer
+- **value**: a single piece of data (e.g., numbers, characters, text)
+  - single-quotes are interpreted as character values. double-quotes are interpreted as text.
+- **literal**: a fixed value placed directly into the source code
+- **RAM** is used to load a program when running it. Additional RAM is also reserved for use while running.
+- direct memory usage is discouraged in C++. access it indirectly thru objects
+- **object**: a region of storage that can hold a value.
+- **variable**: an object with a name (vs. unnamed/anon)
+- **definition**: a special kind of declaration statement to tell the compiler we want to use a variable; e.g. `int x;`
+- **allocation**: the process of reserving storage for an object's use
+- **type**: what kind of value the object will store
+- In C++, the type of an object must be known at compile time (so the compiler knows how much memory to allocate), and it can't be changed without re-compilation.
+- `=` (assignment operator): copies the right-hand value to the left-hand variable
+- **initialization**: specifying an initial value for an object
+  - default-initialization (`int x;`) leaves the variable with an indeterminate value in most cases.
+  - list-initialization disallow "narrowing conversions" (the conversion of a value from a larger to smaller data type)
+    - `int w1 {4.5}` will cause a compilation error or warning
+  - copy-initialization (`int w = 4.5`) and direct-initialization (`int w (4.5)`) will initialize the variable with value 4
+  - value-initialization uses an empty set of braces (`int w {}`). this usually leads to a value of "zero" (depending on type).
+  - ``[[maybe_unused]]`` (C++17): tells the compiler that we are okay with a variable being unused
+- **iostream**
+  - **`std::cout` is buffered**: the requested output "gets in line" in a **buffer** (region of memory that queues requests)
+    - periodically, the buffer is flushed, and the data collected is transferred
+  - `std::endl` actually flushes the buffer, which is already handled by C++. we can use `'\n'` for speed when dealing with text
+  - `std::cin` is also buffered: the input is added to an input buffer, and the "enter" is stored as a `\n`
+    - the extraction operator `>>` removes chars from the front of the input buffer and converts them to a value copy-assigned to the variable
+    - if you enter input "4 5" in the example, it will assign 4 to the first var, and then stop due to the space. then it will assign 5 to the next usage of extraction
+  - the basic extraction (`>>`) process
+    1. if `std::cin` is in a bad state, abort the extraction process immediately (nothing else happens)
+    2. leading whitespace is discarded from the buffer
+    3. if the input buffer is empty, wait for the user to input something (and discard leading whitespace)
+    4. extract as many characters as possible, until seeing a newline (`\n`) or invalid character for the variable being extracted to
+       - if no characters can be extracted, copy-assign 0 to the variable (C++11); any future extractions fail until the `std::cin` is cleared
+  - best practice: always initialize your variables, unless intentionally avoiding it for performance purposes.
+  - **implementation-defined behavior**: behavior defined by a specific compiler; e.g. `sizeof(int)` may be 4 or 2.
+    - avoid if possible to ensure portability
+  - naming
+    - **identifier**: the name of a variable or other thing. It cannot be a keyword, and it must begin with a letter or underscore, and only contain letters, underscores, and numbers.
+    - best practice: camelCase and snake_case
+    - code is read more often than it is written. try to save a reader's time
+    - **side-effect**: an observable effect that goes beyond producing a return value; e.g. `x = 5;`.
+  - **expression**: sequence of stuff that calculates a value
