@@ -1,6 +1,17 @@
 # prep
 i learn to code in a way where my thought process can be inspected
 
+## how to run the code
+e.g., u wanna run the code in `notes/learncpp_com/ch2_intro_to_fns`
+edit `CMakeLists.txt` in the root directory to add the necessary files, e.g.:
+```
+add_executable(ch2_intro_to_fns
+    notes/learncpp_com/ch2_intro_to_fns/main.cpp
+    notes/learncpp_com/ch2_intro_to_fns/add.cpp
+)
+```
+then right click `CMakeLists.txt` to add the configuration if it doesn't already exist
+
 ## 20250401
 day 1, spent hours figuring out how to get c++ intellisense to work on my mac but it wasn't cooperating.
 at least for now I'll probably won't run my solutions here.
