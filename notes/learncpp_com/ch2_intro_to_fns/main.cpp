@@ -1,4 +1,5 @@
 #include <iostream>
+#include "add.h"
 
 int getValueFromUser() {
     std::cout << "Enter an integer: ";
@@ -7,7 +8,7 @@ int getValueFromUser() {
     return num;
 }
 
-int add(int x, int y); // forward declaration
+// int add(int x, int y); // forward declaration
 // int add (int, int); // forward declarations don't need to specify param names. but this is bad practice
 
 int main() {

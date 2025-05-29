@@ -9,3 +9,8 @@ add_executable(ch2_intro_to_fns
     notes/learncpp_com/ch2_intro_to_fns/main.cpp
     notes/learncpp_com/ch2_intro_to_fns/add.cpp
 )
+
+add_executable(ch2_quiz
+    notes/learncpp_com/ch2_intro_to_fns/quiz.cpp
+    notes/learncpp_com/ch2_intro_to_fns/io.cpp
+)
