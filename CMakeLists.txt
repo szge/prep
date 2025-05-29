@@ -14,3 +14,7 @@ add_executable(ch2_quiz
     notes/learncpp_com/ch2_intro_to_fns/quiz.cpp
     notes/learncpp_com/ch2_intro_to_fns/io.cpp
 )
+
+add_executable(ch3_debugging
+    notes/learncpp_com/ch3_debugging/main.cpp
+)
