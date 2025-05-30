@@ -1,0 +1,45 @@
+- memory addresses are byte-aligned; a byte is the smallest unit of addressable memory
+- data types ("types") tell the compiler how to interpret the contents of memory
+- **fundamental data types** ("primitives"): float/long/long double, bool, char/wchar_t/char8_t/char16_t/char32_t, short int/int/long int/long long int, std::nullptr_t, void
+- **compound data types**: more complex, and allow for user-defined types
+- standard integer types: short, int, long, long long (signed and unsigned)
+- standard library types
+- integral (like an integer) types: bool, char types, plus standard integer types
+- the `_t` suffix usually denotes a type in modern C++
+- `void`: no type
+- incomplete type: a type declared but not yet defined. void is intentionally incomplete since it can't be defined.
+  - incomplete types can't be instantiated (`void value;`); `sizeof` results in compilation error
+- the size of an object (n) puts a limit on the number of unique values it can store ($2^n$)
+- C++ standard rules for object size:
+1. objects >= 1 byte, for addressing
+2. byte >= 8 bits
+3. char >= 8 bits, short, int >= 16, long >= 32, long long >= 64
+4. char, char8_t >= 8 bits
+- `sizeof` returns the size of an object in bytes, given a type or variable. implementation-defined
+  - `sizeof` doesn't include dynamically allocated memory used by an object
+  - returns a value of type `std::size_t`, which is an alias (typedef) for an implementation-defined unsigned integral type
+    - `std::size_t` imposes an upper limit to the size of an object, otherwise compiler error.
+- signed $n$-bit integers can store values between $-2^{n-1}$ to $2^{n-1}-1$, assuming standard two's complement representation
+- C++ standard: if the result of an expression evaluation isn't mathematically defined or not in the range of representable values, the behavior is undefined
+  - e.g. overflow on signed integers is undefined behavior
+- use unsigned integers when you don't need negative values. overflow on unsigned integers stores the remainder result.
+- operations involving signed and unsigned integers usually convert the signed integer to unsigned
+- best practice: favor signed numbers for quantities and operations
+- **fixed-width integers**: an alternate set of integer types that are guaranteed to be the same size on any architecture, e.g. `std::uint16_t`
+- quirk: `std::int8_t` and `std::uint8_t` typically behave like chars, e.g., when printing
+  - to ensure the integer treatment, convert it to `int` using `static_cast`. `static_cast<int>(myInt)`
+- "fast" types: the fastest (CPU) integer type with at least n bits, e.g., `std::int_fast32_t`; "least" provides the smallest
+- always include a decimal place when using floating point literals, to help the compiler (e.g. `5.0` or `5.0f`), otherwise there may be a loss of precision
+- by default, `std::cout` outputs floats with 6 significant digits (min float precision)
+- best practice: favor double over float for precision, unless space is limited
+- comparing floating point numbers is generally problematic due to imprecision
+- IEE-754 suppors the special values +-Inf, NaN, +-0.0 (signed zero)
+- `std::cout` prints 0 for false and 1 for true by default; to print the word, use `std::boolalpha`.
+- to use "false" and "true" as inputs to `std::cin`, first input to `std::boolalpha`; but numeric values will no longer be accepted
+- for boolean conditional expressions, non-zero values convert to true, and zero values convert to false
+- to get a whitespace character with `std::cin`, which ignores whitespace by default, use a `std::cin.get(ch);`
+- type conversion doesn't modify the value/object, it creates a new one, via a temporary object
+  - except for some advanced type conversions like `const_cast` or `reinterpret_cast`
+- use `static_cast` to do explicit type conversion without the compiler complaining about unsafe conversions
+  - e.g. `int y = static_cast<int>(5.5);`
+  - 

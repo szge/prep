@@ -18,3 +18,15 @@ add_executable(ch2_quiz
 add_executable(ch3_debugging
     notes/learncpp_com/ch3_debugging/main.cpp
 )
+
+add_executable(ch4_fundamental_types
+    notes/learncpp_com/ch4_fundamental_types/main.cpp
+)
+
+add_executable(ch4_quiz
+    notes/learncpp_com/ch4_fundamental_types/quiz.cpp
+)
+
+add_executable(ch4_quiz2
+    notes/learncpp_com/ch4_fundamental_types/quiz2.cpp
+)
