@@ -30,3 +30,12 @@ add_executable(ch4_quiz
 add_executable(ch4_quiz2
     notes/learncpp_com/ch4_fundamental_types/quiz2.cpp
 )
+
+add_executable(ch5_constants_strings
+    notes/learncpp_com/ch5_constants_strings/main.cpp
+#    notes/learncpp_com/ch5_constants_strings/string_view.cpp
+)
+
+add_executable(ch5_quiz
+    notes/learncpp_com/ch5_constants_strings/quiz.cpp
+)
