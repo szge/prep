@@ -1,0 +1,34 @@
+- **operation**: a mathematical process producing a new value from zero or more inputs
+- to evaluate an expression, the compiler must:
+  1. at compile-time, parse the expression and determine how operands are grouped with operators, via precedence and associativity rules
+  2. at compile or runtime, evaluate operands and execute operations to produce a result
+- all operators are assigned a level of precedence. higher precedence ops group operands before lower precedence ones.
+- if two ops have the same precedence, associativity says that the compiler should evaluate the operators in a direction
+  - subtraction has precedence 6, and precedence 6 has left to right associativity.
+- precedence level 1 is the highest, and precedence level 17 is the lowest.
+- precedence and associativity rules **don't tell you the order of evaluation**.
+  - this is left up to the compiler. for example, for `a + b`, the compiler may choose to evaluate `a` or `b` in any order
+- **integer division** drops any fractional part; e.g. `-7 / 4 = -1`
+- division with 0 or 0.0 is undefined behaviour
+- the only **modifying operators** in C++ (changes operand values) are: assignment operators (`=`, `+=`, `|=` etc.) and `++` and `--`
+- `x % y` always returns results with the sign of x.
+- `pow` from `<cmath>` has doubles, so write your own fn for integer exponentiation; in the majority of cases, it will overflow, so be careful
+- the prefix increment/decrement operator first increments/decrements, then evaluates the expression as the value of the operand
+- the postfix operators first copy the operand, then increments the original operand, then evaluates as the copy.
+  - the prefix version is thus often more performant
+- **side effects**: `add(x, ++x)` is undefined behavior since it depends on whether the left or right arguments are evaluated first, which is not defined in the standard.
+  - this is a problem only because of side effects (observable effects beyond producing a return value)
+  - don't use variables with side effects more than once in a statement (`x + ++x`)
+- the comma operator (`,`) allows evaluation of multiple expressions wherever a single expression is allowed. it evaluates the left operand, then the right, and returns the result of the right.
+  - it has the lowest precedence, so it's somewhat dangerous. for example, `z = (a, b)` is different from `z = a, b`.
+  - commas as separators don't invoke the operator
+- the (ternary) conditional operator `? :` evaluates as part of an expression, meaning it can be used where statements can't be used.
+  - `int classSize { bigClass ? 30 : 20 };`
+  - the conditional operator has low precedence so it may not evaluate as expected; wrap the conditional in parentheses
+  - the compiler will attempt to match the type of the second and third operand
+- comparing floats close in size is problematic since they're not precise
+  - avoid using `==` and `!=` with floats; instead use `(std::abs(a - b) <= (std::max(std::abs(a), std::abs(b)) * relEpsilon));` (relative epsilon)
+- short circuit evaluation may cause logical OR or AND to not evaluate the right operand; avoid using expressions with side effects
+  - exception to the operand "any order" evaluation rule
+- if `a` and `b` are bool, then `a != b` is the same as `a XOR b`; this can be chained; for non-bool, static_cast to bool or use `!!`
+- 

@@ -39,3 +39,15 @@ add_executable(ch5_constants_strings
 add_executable(ch5_quiz
     notes/learncpp_com/ch5_constants_strings/quiz.cpp
 )
+
+add_executable(ch6_operators
+    notes/learncpp_com/ch6_operators/main.cpp
+)
+
+add_executable(ch6_quiz
+    notes/learncpp_com/ch6_operators/quiz.cpp
+)
+
+add_executable(chO_bit_manipulation
+    notes/learncpp_com/chO_bit_manipulation/main.cpp
+)

@@ -1,0 +1,18 @@
+- objects must be at least one byte large, but it's wasteful if we need to store a lot of boolean values.
+- **bit manipulation**: modifying individual bits within an object
+- to define a set of bit flags, use an unsigned int (8, 16, etc.) or `std::bitset`
+- bit numbering is usually done right to left
+- `std::bitset` is optimized for speed, not memory savings. the size of a `std::bitset` is usually the number of bytes to hold the bits, rounded up to the nearest `sizeof(size_t)`.
+  - use when convenient, not to save memory
+- bit manipulation ("bitwise") operators: `<<` (shift left), `>>`, `~` (NOT), `&`, `|`, `^` (bitwise XOR)
+  - avoid using these with signed integral operands
+- bitwise assignment operators: `<<=`, `>>=`, `&=`, `|=`, `^=`.
+- bitwise operators perform integral promotion on smaller integral types (if they're smaller than int, they'll be promoted to int or unsigned int)
+  - to avoid this, use `static_cast` to convert the result back to the narrower type
+  - avoid bit shifting on integral types smaller than int when possible
+- `std::bitset` supports all bitwise operators, so you can use them instead of "test", "set", etc. (esp. for multiple bits)
+- method 1 converting binary to decimal: continually divide by 2 and write down the remainders
+- method 2 converting binary to decimal: keep subtracting the largest power of 2 from the number
+- signed numbers are usually stored as two's complement (the leftmost bit is used as the sign)
+  - to convert decimal to binary with two's complement: 5 is 00000101; invert bits and add 1 to get 11111011 (-5)
+  - to convert (negative) binary to decimal: invert bits, add 1, then make decimal negative
