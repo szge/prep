@@ -1,0 +1,28 @@
+- control flow statements: allow changing the normal path of execution
+- conditional (if, else, switch), jumps (goto, break, continue), fn calls, loops (while, do-while, for, ranged-for), halts (`std::exit()`, `std::abort()`), exceptions (try, throw, catch)
+- `if` and `else` statements declare implicit blocks, so don't define variables in them. try to use brackets
+- dangling else: an else-statement is paired up with the last unmatched if-statement in the same block.
+- null statement: a single semicolon `;`
+- `if constexpr ()` statement (C++17): evaluates at compile-time and the compiler will replace the conditional with the appropriate code
+- switch statements
+  - allow only integral types since they are typically implemented with jump tables for optimization
+  - case labels are conventionally not indented since labels don't define a nested scope
+  - execution happens sequentially until (1) the end of the switch block (2) another control flow statement, so without a break or return, execution will overflow into subsequent cases
+    - the `[[fallthrough]]` attribute (C++17) indicates to the compiler that a fallthrough is intentional
+  - initialization of variables is disallowed except in the last case; if a case needs to define and/or initialize a variable, do so in an explicit block `{}`
+- goto statements
+  - create a statement label (`tryAgain:`); conventionally not indented. `goto tryAgain;`
+  - statement labels have fn scope, so it's visible in the fn even before its declaration. label and `goto` must be in the same fn.
+  - statement labels must be associated with a statement, so at least put a null statement after it.
+  - you can't jump forward over the initialization of a variable
+  - avoid using goto!! except maybe when you need to exit a nested loop but not the whole fn
+- do-while statements: a while loop except the statement always executes at least once; favour while loops
+- for-loops:
+  - can use the comma operator to change the value of multiple values in the end-expression
+  - variables used only inside a loop should be defined in the loop, to keep scoping small and allow the compiler to optimize
+  - avoid unsigned types for loop variables
+- `break`
+  - signifies a switch case is finished
+  - ends a loop early
+- `continue` ends the current loop iteration without terminating the loop
+- 

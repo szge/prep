@@ -51,3 +51,11 @@ add_executable(ch6_quiz
 add_executable(chO_bit_manipulation
     notes/learncpp_com/chO_bit_manipulation/main.cpp
 )
+
+add_executable(ch7_scope_duration_linkage
+    notes/learncpp_com/ch7_scope_duration_linkage/main.cpp
+)
+
+add_executable(ch8_control_flow
+    notes/learncpp_com/ch8_control_flow/main.cpp
+)

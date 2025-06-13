@@ -1,0 +1,66 @@
+- **compound statement** (block): a group of 0+ statements treated as if it was a single statement.
+  - blocks begin with `{` and end with `}`.
+  - blocks can be used anywhere a single statement is allowed
+  - blocks are used with fn bodies, if-else statements
+  - blocks can be nested inside other blocks (unlike fns)
+  - the C++ standard says compilers should support 256 levels of nesting
+  - if your nesting is >3, consider refactoring into fns
+- **namespaces**
+  - if you introduce multiple fns with the same signature into the same scope (e.g. global) in separate files, the linker will complain at the point of redefinition
+    - to avoid, put fns in their own namespaces
+  - to forward declare in a header file, identifiers need to be in the same namespace
+  - namespace blocks can be defined in multiple locations; they will all belong to the same namespace
+  - `std` has a special rule prohibiting extension from user code, so adding to the `std` namespace produces undefined behaviour
+  - **namespace alias**: an alias for a namespace (e.g. `namespace Active = Foo::Goo;`)
+- local variables
+  - **storage duration** determines rules for when and how a variable will be created and destroyed
+    - local vars have **auto storage duration**, becoming destroyed at the end of the block in which they were defined
+  - **linkage** determines whether a declaration of that same identifier in a different scope refers to the same thing
+  - variables should be defined in the most limited scope
+- global variables: conventionally declared at the top of the file in the global namespace (outside a fn)
+  - identifiers declared in the global namespace can be used anywhere in the file from that point onwards
+  - global vars can also be defined in a user-defined namespace. prefer defining them in a namespace rather than the global one.
+  - global vars have **static duration**, created when the program starts (before `main` call), and destroyed when it ends
+  - consider prefixing global variable identifiers with `g` or `g_`
+  - unlike local vars which are default uninitialized, static duration variables are zero-initialized by default
+  - use of non-constant global variables should generally be avoided
+- variable shadowing (name hiding)
+  - if you have a var in a nested block that has the same name as a var in an outer block, the nested variable hides the outer variable where they are both in scope
+    - inside the nested block, there is no way to directly access the shadowed variable
+      - except, for global variables you can use the `::` scope operator to tell the compiler you mean the variable in the global namespace
+    - avoid variable shadowing because it can lead to mistakes
+- internal linkage
+  - an identifier's linkage determines whether other declarations of that name refer to the same object or not
+  - local vars have no linkage
+  - global vars and fn identifiers can have either internal or external linkage.
+  - **internal linkage**: an identifier can be seen and used within a single translation unit, but is not accessible from other translation units.
+    - e.g. if two source files have identifiers with the same name and internal linkage, they will be treated as independent (no ODR violation)
+  - to make a non-const global var internal, use the `static` keyword. e.g. `static int g_x{};`; const and constexpr globals have internal linkage by default
+  - fns have external linkage by default but can be set to internal linkage via the `static` keyword
+  - modern C++ prefers using unnamed namespaces to `static` to give internal linkage to things
+  - best practice: consider giving internal linkage to every identifier that isn't meant to be used from another file, via unnamed namespaces.
+- external linkage and variable forward declarations
+  - identifiers with external linkage can be seen and used in the file in which it's defined, and from other files via forward declaration
+  - identifiers w external linkage are visible to the linker, which does (1) connect usages between translation units (2) deduplicate inline identifiers so one canonical definition remains
+  - fns have external linkage by default
+  - to make a global variable external, use the `extern` keyword (`extern const int g_y {3};`)
+    - non-const global vars are external by default
+    - to use an external global var defined in another file, you must place a forward declaration using the `extern` keyword with no initialization value (`extern const int g_y;`)
+      - fn forward declarations don't need `extern`, since the compiler can tell based on if a fn body is supplied. var forward declarations do need it to differentiate from uninitialized variable definitions.
+    - avoid `extern` on non-const global vars with an initializer.
+    - best practice: use `extern` for global var forward declarations or const global variable defns. don't use it for non-const global var defns (they are implicitly extern)
+- non-const global variables are evil
+  - it's hard to tell when its value will be changed, and hard to keep track of what changes its value
+  - global variables reduce modularity
+  - you can use them in some cases when it can reduce program complexity, for example, log files or random number generators. they should be singletons and have ubiquitous use
+- initialization order of global variables
+  - static variables are initialized on program startup, before `main` is executed
+    1. static initialization:
+       1. global vars with constexpr initializers (including literals) are initialized to those values. ("**constant initialization**")
+       2. global vars without initializers are zero-initialized. (considered static since 0 is constexpr)
+    2. dynamic initialization: global vars with non-constexpr initializers are initialized
+       - within a file, generally initialized in order of definition; avoid depending on the initialization value of later variables
+       - between translation units, the order of static object initialization is ambiguous
+         - avoid initializing objects with static duration using other object with static duration from a different translation unit
+
+TODO: finish 7.9+
