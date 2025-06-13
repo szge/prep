@@ -25,4 +25,22 @@
   - signifies a switch case is finished
   - ends a loop early
 - `continue` ends the current loop iteration without terminating the loop
-- 
+- halting (early program exits)
+  - when a program exits normally, the `main()` fn returns, all local vars and fn params are destroyed (per usual), and `std::exit()` is called
+  - `std::exit()` causes a program to end normally (in an expected way)
+    - compare to status codes, which are used to show if the program was successful
+    -`std::exit()` performs cleanup fns: objects with static storage are destroyed, file cleanup, control is returned to OS, arg passed to exit used as status code
+    - called implicitly at the end of `main()`, but you can also call it explicitly using the `<cstdlib>` header
+    - `std::exit()` doesn't clean up local variables!
+  - `std::atexit()` allows specifying a fn to be called on program termination (`std::exit()`)
+    - multiple registrations are allowed, and they will be called in reverse order of registration (last first)
+  - in multithreaded programs, `std::exit()` may cause crashing due to cleanup of static objects possibly used by other threads.
+    - instead, use `std::quick_exit()` and `std::at_quick_exit()` that don't clean up static objects
+  - `std::abort()` causes an abnormal termination, signaling an unusual runtime error e.g. division by zero. it doesn't do any cleanup
+  - `std::terminate()` is usually used with exceptions and calls `std::abort()` by default
+  - best practice: only halt if there is no safe way to return normally from main. prefer exceptions for handling errors
+- random number generation
+  - **seed**: the value used to set the initial state of the PRNG
+  - **underseeded**: the PRNG doesn't have enough bits of quality seed data; results in high correlation, or guessing the seed
+    - ideally, a seed should contain as many bits as the state of the PRNG, each bit should be independently randomized, and have low correlation with previous seeds
+  - 

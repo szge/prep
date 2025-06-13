@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 void printCharCodes()
 {
@@ -68,6 +69,18 @@ void fizzbuzzpop(const int num)
     }
 }
 
+void cleanup() // must have no params or return value
+{
+    std::cout << "cleanup\n";
+}
+
+unsigned int LCG16() // rng
+{
+    static unsigned int s_state { 0 };
+    s_state = 8253729 * s_state + 2396403;
+    return s_state % 32768;
+}
+
 int main ()
 {
     printCharCodes();
@@ -75,6 +88,20 @@ int main ()
     rightAlignedLoops();
     fizzbuzz(15);
     fizzbuzzpop(150);
+
+    // generate 100 "random" nums
+    for (int count{ 1 }; count <= 100; ++count)
+    {
+        std::cout << LCG16() << '\t';
+
+        // If we've printed 10 numbers, start a new row
+        if (count % 10 == 0)
+            std::cout << '\n';
+    }
+
+    std::atexit(cleanup);
+    std::exit(0); // early termination with status code 0
+    // anything after never gets executed
 
     return 0;
 }
