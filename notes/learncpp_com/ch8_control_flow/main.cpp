@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstdlib>
+#include <random>
+#include "random.h"
 
 void printCharCodes()
 {
@@ -81,6 +83,43 @@ unsigned int LCG16() // rng
     return s_state % 32768;
 }
 
+void generate_lcg16(const int num = 10)
+{
+    // generate 100 "random" nums
+    for (int count{ 1 }; count <= num; ++count)
+    {
+        std::cout << LCG16() << '\t';
+
+        // If we've printed 10 numbers, start a new row
+        if (count % 10 == 0) std::cout << '\n';
+    }
+}
+
+void generate_mt19937(const int num = 40)
+{
+    std::mt19937 mt{};
+    for (int count {1}; count <= num; ++count)
+    {
+        std::cout << mt() << '\t';
+        if (count % 5 == 0) std::cout << '\n';
+    }
+}
+
+void generate_die_rolls(const int num = 40)
+{
+    // generate a die roll from 1 to 6 using mt19937 and a uniform distribution
+    std::random_device rd{};
+    std::seed_seq ss { rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd() };
+    std::mt19937 mt{ ss };
+    std::uniform_int_distribution<> die6 { 1, 6 };
+    std::cout << "random die rolls:\n";
+    for (int count { 1 }; count <= num; ++count)
+    {
+        std::cout << die6(mt) << '\t';
+        if (count % 10 == 0) std::cout << '\n';
+    }
+}
+
 int main ()
 {
     printCharCodes();
@@ -89,15 +128,20 @@ int main ()
     fizzbuzz(15);
     fizzbuzzpop(150);
 
-    // generate 100 "random" nums
-    for (int count{ 1 }; count <= 100; ++count)
-    {
-        std::cout << LCG16() << '\t';
+    generate_lcg16(10);
+    // generate_mt19937(40);
+    generate_die_rolls();
 
-        // If we've printed 10 numbers, start a new row
-        if (count % 10 == 0)
-            std::cout << '\n';
+    // try our random header function with arguments with different return types
+    std::cout << Random::get<std::size_t>(1, 6u) << '\n'; // returns std::size_t between 1 and 6
+
+    // access Random::mt directly if we have our own distribution
+    std::uniform_int_distribution<> die6 { 1, 6 };
+    for (int count { 1 }; count <= 10; ++count)
+    {
+        std::cout << die6(Random::mt) << '\t';
     }
+    std::cout << '\n';
 
     std::atexit(cleanup);
     std::exit(0); // early termination with status code 0

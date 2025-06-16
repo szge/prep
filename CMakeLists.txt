@@ -59,3 +59,15 @@ add_executable(ch7_scope_duration_linkage
 add_executable(ch8_control_flow
     notes/learncpp_com/ch8_control_flow/main.cpp
 )
+
+add_executable(ch8_quiz1
+    notes/learncpp_com/ch8_control_flow/quiz1.cpp
+)
+
+add_executable(ch8_quiz2
+    notes/learncpp_com/ch8_control_flow/quiz2.cpp
+)
+
+add_executable(ch8_quiz3
+    notes/learncpp_com/ch8_control_flow/quiz3.cpp
+)

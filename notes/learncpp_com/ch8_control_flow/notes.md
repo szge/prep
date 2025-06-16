@@ -43,4 +43,11 @@
   - **seed**: the value used to set the initial state of the PRNG
   - **underseeded**: the PRNG doesn't have enough bits of quality seed data; results in high correlation, or guessing the seed
     - ideally, a seed should contain as many bits as the state of the PRNG, each bit should be independently randomized, and have low correlation with previous seeds
-  - 
+    - avoid underseeding: `std::seed_seq` to pass in as many randomized values as you have
+  - use `mt19937` from `<random>` for performance and quality, unless you need extremely high quality random results
+  - use the system clock, system random device (`std::random_device`) to seed the PRNG (it's implementation-defined so only use for seeding since it may be expensive)
+  - only seed a PRNG once
+  - `std::mt19937` performs a warm-up (discarding the initial generated values) after `seed_seq` initialization, so we don't need to explicitly do this.
+  - when debugging a program with random numbers, seed the PRNG with a fixed value to replicate the bad behaviour
+  - in our `random.h` file, `mt` and supporting fns are `inline`, so we can avoid the ODR as long as all defns are identical (imported from header)
+    - we need several helper objects to seed the mt, so we use a helper fn, so we don't need to explicitly call an init fn
