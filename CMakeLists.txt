@@ -71,3 +71,7 @@ add_executable(ch8_quiz2
 add_executable(ch8_quiz3
     notes/learncpp_com/ch8_control_flow/quiz3.cpp
 )
+
+add_executable(ch9_testing
+    notes/learncpp_com/ch9_testing/main.cpp
+)

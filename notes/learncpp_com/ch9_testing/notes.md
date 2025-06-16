@@ -1,0 +1,59 @@
+- **test code in small pieces** - write your program in small, well-defined units, compile often, and test it as you go
+- use the preprocessor macro `assert`; but check that NDEBUG is defined
+- start testing after you write any non-trivial fn
+- **coverage**
+  - **statement coverage** is the percentage of statements that is exercised by testing routines
+  - **branch coverage** is the percentage of branches that have been executed; aim for 100%
+  - **loop coverage**: ensuring that a loop works properly when iterating 0, 1, and 2 times
+  - test different **categories** of input values (similar characteristics)
+- common semantic errors:
+  - infinite loops
+  - off-by-one errors
+  - incorrect operator precedence
+  - precision issues with floating point types
+  - integer division
+  - not using a compound statement when one is required (dangling else, or no if block)
+  - forgetting to use the fn call operator (usually returns a fn ptr)
+- defensive programming: anticipate ways in which the software can be misused
+  - assumption errors: assuming called fns are successful, assuming input is in the correct format and semantically valid, assuming fn args are semantically valid
+- handling errors in fns:
+  - handling errors within the fn: the best strategy if possible, recover from the error within the fn
+    - retry until successful, or cancel the operation (helpfully with an error message)
+  - pass the error back to the caller: use in cases where the fn needs to return a value
+    - change void to bool return type for succ/fail
+    - use **sentinel values**: a value that has a special meaning (e.g. returning `0.0` for dividing by zero)
+      - alternatively, return a `std::optional` or `std::expected`
+  - halt the program: use for non-recoverable errors
+    - `std::exit(1);`
+  - throw an exception
+    - propagate up the call stack until it is handled or program terminated in the case of failing to handle
+- logging
+  - use `std::cout` for conventional, user-facing text, or user-facing error messages
+  - use `std::cerr` for info that can help diagnose issues
+  - use a logfile for applications that are transactional in nature (processes specific events)
+- handling invalid input
+  - input validation
+    - (inline) prevent the user from typing invalid input in the first place
+    - (post-entry) validate the string is correct, and if so, convert it to the final variable format
+    - (post-entry) let the user enter whatever, let `>>` try to extract it, and handle the error cases
+      - extraction succeeds but the input is meaningless: if invalid, ask user to try again
+      - extraction succeeds but with extraneous input: after extraction, run `std::cin.ignore(std:numeric_limits<std::streamsize>::max(), '\n');`
+        - or, treat this as a failure case, and use `cin.eof` and `cin.peek` to check for unextracted input
+      - extraction fails: put `std::cin` back in normal operation mode, remove failed input
+      - checking for EOF: terminate the program if EOF (otherwise the buffer will be disconnected for future requests)
+      - extraction succeeds but the user overflows a numeric value: `std::cin` goes into failure mode, but assigns the closest in-range value to the variable
+- `assert` and `static_assert`
+  - `std::abort` is good option for semantic errors since you will usually be given the option to start debugging at the point of failure
+  - **preconditions**: place at the top of a fn, use an early return if the precondition isn't met ("bouncer" pattern)
+  - **invariant**: a condition that is true while some code section is executing
+  - **postcondition**: a condition that is true after executing some code
+  - **assertion**: an expression that is true unless there's a bug. if `false`, an error message is displayed and the program is terminated (`std::abort`)
+    - use `assert(condition && "some error message");` to give context
+    - also useful for documenting cases not implemented at the time of coding
+    - if the preprocessor macro `NDEBUG` is defined, the assert macro gets disabled (set by default for release configs)
+    - use `static_assert(condition, message);` for compile-time assertion (must be a constexpr); doesn't need an include header
+      - no runtime cost, so favor it over `assert` when possible
+  - use assertions to detect programming errors during development, and error handling to handle cases that can happen in a release build; you can use both
+  - `assert()` should have no side effects, since otherwise there will be differences in debug and release
+  - only use asserts in cases where corruption isn't likely to occur (otherwise `abort()` will terminate the program immediately)
+  - 

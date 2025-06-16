@@ -10,12 +10,46 @@ namespace Config
     const int num_allowed_guesses { static_cast<int>(ceil(log2(pick_range_max - pick_range_min))) };
 }
 
+// clear extraneous input from the cin buffer
+void ignoreLine()
+{
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+// returns true if extraction failed, otherwise false
+bool clearFailedExtraction()
+{
+    if (!std::cin) // previous extraction failed
+    {
+        if (std::cin.eof())
+        {
+            std::exit(0);
+        }
+
+        std::cin.clear(); // put back into normal operation mode
+        ignoreLine(); // remove bad input
+        return true;
+    }
+    return false;
+}
+
 int getUserGuess(const int num_guesses)
 {
-    std::cout << "Guess #" << num_guesses << ": ";
-    int guess {};
-    std::cin >> guess;
-    return guess;
+    while (true)
+    {
+        std::cout << "Guess #" << num_guesses << ": ";
+        int guess {};
+        std::cin >> guess;
+
+        if (clearFailedExtraction() || guess < Config::pick_range_min || guess > Config::pick_range_max)
+        {
+            std::cout << "Oops, that input is invalid. Please try again.\n";
+            continue;
+        }
+
+        ignoreLine();
+        return guess;
+    }
 }
 
 void playGame()
@@ -44,6 +78,7 @@ bool playAgain()
     {
         std::cout << "Would you like to play again (y/n)? ";
         std::cin >> response;
+        ignoreLine();
         switch (response)
         {
         case 'y': return true;
