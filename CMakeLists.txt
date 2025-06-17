@@ -75,3 +75,11 @@ add_executable(ch8_quiz3
 add_executable(ch9_testing
     notes/learncpp_com/ch9_testing/main.cpp
 )
+
+add_executable(ch10_types
+    notes/learncpp_com/ch10_types/main.cpp
+)
+
+add_executable(ch10_quiz
+    notes/learncpp_com/ch10_types/quiz1.cpp
+)
