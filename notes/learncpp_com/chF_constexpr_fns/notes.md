@@ -1,0 +1,20 @@
+- constexpr fns
+  - fn calls to normal fns aren't allowed in constant expressions. only calls to constexpr fns are allowed
+  - the compiler chooses whether to evaluate constexpr fns at compile time or runtime.
+    - compile-time eval is only guaranteed when a constant expression is required, e.g. constexpr initialization
+  - constexpr fns can be called with constexpr or non-constexpr arguments
+  - F.2 for ex of fn compiling for runtime use, but failing for compile time.
+    - always test constexpr fns in a context requiring a constant expression
+  - constexpr/consteval fn params aren't constexpr. if u need this, use non-type template params
+  - implicitly inline. if used in multiple sources, define in a header file and include
+  - a constexpr fn can call a non-constexpr fn only in a non-constant context
+- consteval
+  - you can force a fn call to be evaluated at compile time by using it where a constant expression is required, e.g. initializing a constexpr var
+    - if you want the flexibility of constexpr for runtime calls, you can force compile time constexpr; refer to F.3
+  - alternatively, mark a fn as consteval to indicate that a fn must evaluate a compile time (aka immediate fns)
+  - use when the fn must evaluate at compile time, e.g. its operations are only done at compile time
+- suggestions
+  - avoid calling non-constexpr fns in constexpr fns if possible
+  - if fn requires different behaviour for const and non-const contexts, conditionalize with `if (std::is_constant_evaluated())` or `if consteval` (C++23)
+  - always test constexpr fns in a constant context
+- pure fns (returns same val given same args, and no side effects) should be made constexpr

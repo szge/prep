@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_executable(misc
+        misc.cpp
+)
+
 add_executable(ch2_intro_to_fns
     notes/learncpp_com/ch2_intro_to_fns/main.cpp
     notes/learncpp_com/ch2_intro_to_fns/add.cpp
@@ -83,3 +87,12 @@ add_executable(ch10_types
 add_executable(ch10_quiz
     notes/learncpp_com/ch10_types/quiz1.cpp
 )
+
+add_executable(ch11_fn_overloading_templates
+    notes/learncpp_com/ch11_fn_overloading_templates/main.cpp
+)
+
+add_executable(ch11_quiz notes/learncpp_com/ch11_fn_overloading_templates/quiz.cpp)
+
+add_executable(chF notes/learncpp_com/chF_constexpr_fns/main.cpp)
+add_executable(chF_quiz notes/learncpp_com/chF_constexpr_fns/quiz.cpp)
