@@ -1,0 +1,7 @@
+- **compiler**: a program that (1) checks your code's validity (2) translates each source code file into an **object file**.
+- **linker**: a program that combines object files into a desired output file (e.g., an executable file)
+  - (1) reads object files and checks validity
+  - (2) resolves cross-file dependencies; throws error on failure
+  - (3) links in library files
+- `make` or `build2` are often used to help automate the building of complex programs
+- 
